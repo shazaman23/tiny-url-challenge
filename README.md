@@ -31,3 +31,21 @@
 
 To interact with the local website that is running visit http://localhost:8000
 - Make sure your docker cluster is running by running `docker-compose ps`. If the containers aren't running you won't be able to get to the local site. If they're down, just bring them back up with `docker-compose up -d`
+
+---
+
+# Challenges I Faced
+- I ran into a couple interesting hiccups with the build process and docker-compose. For example:
+    - I had to change the php libraries that are installed since this runs off of PHP 8.0
+    - For some reason, `php artisan key:generate` command was not actually editing the .env file when docker-entrypoint.sh ran. It would edit the .env fine if I shelled into the container and ran it manually, but not during the entrypoint. I tried a couple different approaches and then gave up and just used sed to edit the file manually. It probably had something to do with differing permissions or context of the build process.
+
+---
+
+# Design Decisions
+- I went with a custom Dockerfile and docker-compose because I have built other Laravel apps in this way before and (considering the docker-compose approach was a bonus) I wanted to use an approach I'd be familiar with.
+
+---
+
+# Future Improvements
+
+- I'm aware that Laravel has now come out with tools to auto-generate a docker-compose file. With more time, I'd do more digging into official Laravel build processes and see if it's just easier to use their process or if there are things about their process that I could use to improve my own.
