@@ -43,9 +43,11 @@ To interact with the local website that is running visit http://localhost:8000
 
 # Design Decisions
 - I went with a custom Dockerfile and docker-compose because I have built other Laravel apps in this way before and (considering the docker-compose approach was a bonus) I wanted to use an approach I'd be familiar with.
+- I'm going to generate a unique ID for each full URL. In order to avoid ID collisions, I'm going to append a unique number to the front of each URL before hashing. This will be a unique ID tracked in the database.
 
 ---
 
 # Future Improvements
 
 - I'm aware that Laravel has now come out with tools to auto-generate a docker-compose file. With more time, I'd do more digging into official Laravel build processes and see if it's just easier to use their process or if there are things about their process that I could use to improve my own.
+- I would implement a login process and implement some rate limiting based off of user id per day to prevent irresponsible use of the service and overload on resources.
