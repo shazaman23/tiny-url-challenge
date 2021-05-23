@@ -9,7 +9,7 @@ composer install
 cp .env.example .env
 NEWKEY=$(php artisan key:generate --show)
 sed -i "s|APP_KEY=|APP_KEY=$NEWKEY|" .env
-php artisan migrate
+php artisan migrate:fresh
 php artisan config:cache
 
 # Update to a viable version of node
