@@ -17,9 +17,9 @@ class CreateTinyUrlsTable extends Migration
             $table->string('id', 7)->primary();
             $table->string('full_url', 512);
             $table->integer('hits')->default('0');
-            $table->increments('seed');
-            $table->timestamp('created_at');
+            $table->timestamps();
         });
+        DB::statement('ALTER TABLE tiny_urls ADD seed INTEGER NOT NULL UNIQUE AUTO_INCREMENT;');
     }
 
     /**

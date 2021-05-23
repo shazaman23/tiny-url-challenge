@@ -9,12 +9,11 @@ class TinyUrl extends Model
 {
     use HasFactory;
 
-    /**
-    *The table associated with the model
-    *
-    * @var string
-    */
-    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $casts = [
+        'id' => 'string'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +21,13 @@ class TinyUrl extends Model
      * @var array
      */
     protected $fillable = [
-        'full_url', 'hits'
+        'id', 'full_url', 'hits'
+    ];
+
+    /**
+     * The attributes that are not needed when model is fetched.
+     */
+    protected $hidden = [
+        'created_at', 'updated_at', 'seed'
     ];
 }

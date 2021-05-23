@@ -31,6 +31,7 @@
 
 To interact with the local website that is running visit http://localhost:8000
 - Make sure your docker cluster is running by running `docker-compose ps`. If the containers aren't running you won't be able to get to the local site. If they're down, just bring them back up with `docker-compose up -d`
+- **Warning:** Every time you redeploy the app locally the database will be reset. Data will not persist. To change this behavior, edit the docker-entrypoint and comment out the `php artisan migrate:fresh` command.
 
 ---
 
@@ -38,16 +39,24 @@ To interact with the local website that is running visit http://localhost:8000
 - I ran into a couple interesting hiccups with the build process and docker-compose. For example:
     - I had to change the php libraries that are installed since this runs off of PHP 8.0
     - For some reason, `php artisan key:generate` command was not actually editing the .env file when docker-entrypoint.sh ran. It would edit the .env fine if I shelled into the container and ran it manually, but not during the entrypoint. I tried a couple different approaches and then gave up and just used sed to edit the file manually. It probably had something to do with differing permissions or context of the build process.
+- My original model design didn't type cast the ID and so the `id` field in each model was returning 0 since it expected an auto-generating int instead of a string.
+- Creating a seed field that was auto-incrementing caused conflicts with the existing primary key of `id` until I rewrote the migration to add the seed field after the fact.
 
 ---
 
 # Design Decisions
 - I went with a custom Dockerfile and docker-compose because I have built other Laravel apps in this way before and (considering the docker-compose approach was a bonus) I wanted to use an approach I'd be familiar with.
 - I'm going to generate a unique ID for each full URL. In order to avoid ID collisions, I'm going to append a unique number to the front of each URL before hashing. This will be a unique ID tracked in the database.
+- For form validation I decided to go for the built-in `url` validation rule instead of `active_url`. I chose to do this because I found examples of other people running into problems with false positives when using `active_url`. (Instead of properly validating that the url provided resolves to a website properly, it tries to validate particular DNS records are returned when digging on the domain).
+- I added the routes for creating new urls and listing existing urls to the api route page since those deal with TinyUrl CRUD operations. The route that handles existing tiny URL redirection was put in the web routes since it will be interacted with directly by a user.
 
 ---
 
 # Future Improvements
 
+- I would try to optimize the startup process further so that there's not such a large gap between when the build finishes and when the service is usable (if possible).
 - I'm aware that Laravel has now come out with tools to auto-generate a docker-compose file. With more time, I'd do more digging into official Laravel build processes and see if it's just easier to use their process or if there are things about their process that I could use to improve my own.
 - I would implement a login process and implement some rate limiting based off of user id per day to prevent irresponsible use of the service and overload on resources.
+- Something I would do with a little more time would be to create a custom validation rule for the url provided that tests that the url will resolve to a website with a proper success code (like 2xx) instead of just testing that the provided value looks like a URL.
+- I would consider implementing API Token Authentication for create and delete calls against the TinyUrl API.
+- I might add routes for deleting or updating an existing tiny URL. 
