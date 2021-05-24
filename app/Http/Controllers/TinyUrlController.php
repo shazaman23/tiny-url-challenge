@@ -12,7 +12,24 @@ use App\Models\TinyUrl;
 class TinyUrlController extends Controller
 {
     /**
-     * List the top 100 URLs 
+     * Displays the top 100 URLs
+     * @return Response
+     */
+    public function index(Request $request) {
+        // Allow users to pick limit. Default to 100 entries
+        $limit = 100;
+        if ($request->query('limit') !== null) {
+            $limit = (int)$request->query('limit');
+        }
+        $tiny_urls = json_decode($this->list($request)->content());
+        return view('home', [
+            'tiny_urls' => $tiny_urls,
+            'limit' => $limit
+        ]);
+    }
+
+    /**
+     * Fetch the top 100 URLs 
      * @return JSONResponse
      */
     public function list(Request $request) {

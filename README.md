@@ -49,6 +49,7 @@ To interact with the local website that is running visit http://localhost:8000
 - I'm going to generate a unique ID for each full URL. In order to avoid ID collisions, I'm going to append a unique number to the front of each URL before hashing. This will be a unique ID tracked in the database.
 - For form validation I decided to go for the built-in `url` validation rule instead of `active_url`. I chose to do this because I found examples of other people running into problems with false positives when using `active_url`. (Instead of properly validating that the url provided resolves to a website properly, it tries to validate particular DNS records are returned when digging on the domain).
 - I added the routes for creating new urls and listing existing urls to the api route page since those deal with TinyUrl CRUD operations. The route that handles existing tiny URL redirection was put in the web routes since it will be interacted with directly by a user.
+- I decdied not to go too in depth with styles. This challenge felt more functionality focused instead of style focused, so I'm focusing my design on utility over appearance.
 
 ---
 
@@ -60,3 +61,4 @@ To interact with the local website that is running visit http://localhost:8000
 - Something I would do with a little more time would be to create a custom validation rule for the url provided that tests that the url will resolve to a website with a proper success code (like 2xx) instead of just testing that the provided value looks like a URL.
 - I would consider implementing API Token Authentication for create and delete calls against the TinyUrl API.
 - I might add routes for deleting or updating an existing tiny URL. 
+- I would make the views more mobile friendly.

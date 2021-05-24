@@ -14,8 +14,5 @@ use App\Http\Controllers\TinyUrlController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [TinyUrlController::class, 'index']);
 Route::get('/{id}', [TinyUrlController::class, 'hit']);
