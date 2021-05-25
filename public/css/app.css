@@ -21,3 +21,30 @@
 .url-list li {
     padding: 10px 0;
 }
+
+.main-form {
+    margin: 0 auto;
+    width: 80%;
+    max-width: 700px;
+    padding: 5px 25px 20px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin: 15px 0 !important;
+}
+
+.help-block {
+    padding-left: 10px;
+    color: #888;
+    font-size: small;
+}
+
+.navbar-nav .nav-link {
+    margin: 0 50px;
+}
+
+.title-head {
+    padding: 25px 0;
+}

@@ -1,5 +1,9 @@
 <x-app>
-    <h1 class="text-center">Top {{ $limit }} URLs</h1>
+    <x-slot name="title">
+        | Home
+    </x-slot>
+
+    <h1 class="title-head text-center">Top {{ $limit }} URLs</h1>
 
     <ol class="url-list">
         @foreach($tiny_urls as $url)

@@ -15,4 +15,6 @@ use App\Http\Controllers\TinyUrlController;
 */
 
 Route::get('/', [TinyUrlController::class, 'index']);
-Route::get('/{id}', [TinyUrlController::class, 'hit']);
+Route::get('/new', [TinyUrlController::class, 'showCreateView']);
+Route::post('/new', [TinyUrlController::class, 'handleCreateForm']);
+Route::get('/{id}', [TinyUrlController::class, 'hitUrl']);

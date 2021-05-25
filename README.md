@@ -41,6 +41,7 @@ To interact with the local website that is running visit http://localhost:8000
     - For some reason, `php artisan key:generate` command was not actually editing the .env file when docker-entrypoint.sh ran. It would edit the .env fine if I shelled into the container and ran it manually, but not during the entrypoint. I tried a couple different approaches and then gave up and just used sed to edit the file manually. It probably had something to do with differing permissions or context of the build process.
 - My original model design didn't type cast the ID and so the `id` field in each model was returning 0 since it expected an auto-generating int instead of a string.
 - Creating a seed field that was auto-incrementing caused conflicts with the existing primary key of `id` until I rewrote the migration to add the seed field after the fact.
+- Struggled a bit getting the validation errors to render properly (I was passing the withErrors helper JSON instead of an array).
 
 ---
 
@@ -50,6 +51,7 @@ To interact with the local website that is running visit http://localhost:8000
 - For form validation I decided to go for the built-in `url` validation rule instead of `active_url`. I chose to do this because I found examples of other people running into problems with false positives when using `active_url`. (Instead of properly validating that the url provided resolves to a website properly, it tries to validate particular DNS records are returned when digging on the domain).
 - I added the routes for creating new urls and listing existing urls to the api route page since those deal with TinyUrl CRUD operations. The route that handles existing tiny URL redirection was put in the web routes since it will be interacted with directly by a user.
 - I decdied not to go too in depth with styles. This challenge felt more functionality focused instead of style focused, so I'm focusing my design on utility over appearance.
+- I decided to add bootstrap cause it makes it easy to throw a clean form up and has helper classes for things like form validation error display. (It will also probably come in handy with NSFW modal stuff later.)
 
 ---
 
@@ -62,3 +64,5 @@ To interact with the local website that is running visit http://localhost:8000
 - I would consider implementing API Token Authentication for create and delete calls against the TinyUrl API.
 - I might add routes for deleting or updating an existing tiny URL. 
 - I would make the views more mobile friendly.
+- After adding user login, I would add a view where a user could quickly view all the tiny URLs they have created so far.
+- I would add to the new URL success view the Tiny URL and the destination it is set to hit (something like on the top 100 page where it shows `tiny_url` --> `full_url`)
