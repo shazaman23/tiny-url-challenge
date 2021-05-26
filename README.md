@@ -10,7 +10,7 @@
 
 3. Clone the project code to your computer from [GitHub](https://github.com/shazaman23/tiny-url-challenge) if you have access. Otherwise, unzip the project code you were given and navigate into the project root.
 
-4. Deploy docker containers (*~10mins*)
+4. Deploy docker containers
 
     ```
     docker-compose up -d
@@ -22,8 +22,16 @@
     ```
     docker-compose logs -f app
     ```
+    
+*Steps 4 and 5 can take between 10 - 15 minutes*
+Please go help yourself to a coffee while you wait.
 
-    (The startup process can take a while the first time it runs)
+Seriously, this startup process takes WAY TOO LONG the first time it runs. As noted in future **Future Improvements** section, if I had more time I would work on optimizing this process significantly. 
+
+You will know the startup is done when the logs show something like the following line:
+```
+PHP 8.0.6 Development Server (http://0.0.0.0:8000) started
+```
 
 ---
 
@@ -60,7 +68,7 @@ To interact with the local website that is running visit http://localhost:8000
 
 # Future Improvements
 
-- I would try to optimize the startup process further so that there's not such a large gap between when the build finishes and when the service is usable (if possible).
+- I would try to optimize the startup process further so that it doesn't take so long when spinning up from scratch and there's not such a large gap between when the build finishes and when the service is usable (if possible).
 - I'm aware that Laravel has now come out with tools to auto-generate a docker-compose file. With more time, I'd do more digging into official Laravel build processes and see if it's just easier to use their process or if there are things about their process that I could use to improve my own.
 - I would implement a login process and implement some rate limiting based off of user id per day to prevent irresponsible use of the service and overload on resources.
 - Something I would do with a little more time would be to create a custom validation rule for the url provided that tests that the url will resolve to a website with a proper success code (like 2xx) instead of just testing that the provided value looks like a URL.
