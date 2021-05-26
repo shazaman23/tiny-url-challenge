@@ -6,8 +6,16 @@
     justify-content: space-between;
 }
 
+.flex.column {
+    flex-direction: column;
+}
+
 .flex .flex-1 {
     flex: 1 1 auto;
+}
+
+.justify-center {
+    justify-content: center !important;
 }
 
 .text-center {
@@ -47,4 +55,8 @@
 
 .title-head {
     padding: 25px 0;
+}
+
+.warning-card button {
+    margin: 35px;
 }

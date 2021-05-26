@@ -41,6 +41,7 @@ To interact with the local website that is running visit http://localhost:8000
 - My original model design didn't type cast the ID and so the `id` field in each model was returning 0 since it expected an auto-generating int instead of a string.
 - Creating a seed field that was auto-incrementing caused conflicts with the existing primary key of `id` until I rewrote the migration to add the seed field after the fact.
 - Struggled a bit getting the validation errors to render properly (I was passing the withErrors helper JSON instead of an array).
+- Had some confusion around database migrations when switching between running off of the docker containers vs running the app locally for debugging purposes.
 
 ---
 
@@ -51,6 +52,9 @@ To interact with the local website that is running visit http://localhost:8000
 - I added the routes for creating new urls and listing existing urls to the api route page since those deal with TinyUrl CRUD operations. The route that handles existing tiny URL redirection was put in the web routes since it will be interacted with directly by a user.
 - I decdied not to go too in depth with styles. This challenge felt more functionality focused instead of style focused, so I'm focusing my design on utility over appearance.
 - I decided to add bootstrap cause it makes it easy to throw a clean form up and has helper classes for things like form validation error display. (It will also probably come in handy with NSFW modal stuff later.)
+- I decided to handle the NSFW condition check in the backend that redirects to a special NSFW warning page so that an NSFW link would throw up the modal no matter where it was clicked from (instead of just adding javascript to the Top 100 home page).
+- I added a button to the NSFW warning modal to allow the user to go back to the Top 100 home page instead of continuing to the NSFW site. I did this because it is generally a good practice to give a user multiple avenues for doing the same thing (they could 1. Close the tab/browser, or 2. Hit the Go Back button to bail on the NSFW site).
+- I went with bootstrap javascript assets as well to make the logic for running a modal automatically really easy and quick to implement.
 
 ---
 
@@ -65,3 +69,4 @@ To interact with the local website that is running visit http://localhost:8000
 - I would make the views more mobile friendly.
 - After adding user login, I would add a view where a user could quickly view all the tiny URLs they have created so far.
 - I would add to the new URL success view the Tiny URL and the destination it is set to hit (something like on the top 100 page where it shows `tiny_url` --> `full_url`)
+- I would consider making features on the homepage dynamic. For example, when a link is clicked, the hits showing for that link update automatically without reloading the page.

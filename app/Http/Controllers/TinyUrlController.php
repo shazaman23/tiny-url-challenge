@@ -143,7 +143,11 @@ class TinyUrlController extends Controller
         $tiny_url->update(['hits' => ++$tiny_url->hits]);
         $tiny_url->save();
 
-        return redirect()->away($tiny_url->full_url);
+        if ($tiny_url->nsfw) {
+            return view('nsfw-warning', ['tiny_url' => $tiny_url]);
+        } else {
+            return redirect()->away($tiny_url->full_url);
+        }
     }
 
     /**

@@ -9,7 +9,7 @@ composer install
 cp .env.example .env
 NEWKEY=$(php artisan key:generate --show)
 sed -i "s|APP_KEY=|APP_KEY=$NEWKEY|" .env
-php artisan migrate:fresh
+php artisan migrate
 php artisan config:cache
 
 # Update to a viable version of node
@@ -22,6 +22,5 @@ export NVM_DIR="$HOME/.nvm"
 # Generate project assets
 npm install
 npm run prod
-
 
 exec "$@"
