@@ -88,7 +88,8 @@ class TinyUrlController extends Controller
      */
     public function create(Request $request) {
         $validated_data = Validator::make($request->all(), [
-            'url' => 'required|url|max:512'
+            'url' => 'required|url|max:512',
+            'nsfw' => 'boolean'
         ]);
 
         if ($validated_data->fails()) {
@@ -118,7 +119,8 @@ class TinyUrlController extends Controller
         // Create a new TinyUrl
         $tiny_url = TinyUrl::create([
             'id' => $id,
-            'full_url' => $request->url
+            'full_url' => $request->url,
+            'nsfw' => $request->nsfw ?? '0'
         ]);
 
         $tiny_url->save();

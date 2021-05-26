@@ -21,7 +21,7 @@ class TinyUrl extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'full_url', 'hits'
+        'id', 'full_url', 'hits', 'nsfw'
     ];
 
     /**

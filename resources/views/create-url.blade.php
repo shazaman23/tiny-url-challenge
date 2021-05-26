@@ -20,7 +20,7 @@
             @enderror
         </div>
         <div class="form-check form-group">
-            <input id="nsfw" class="form-check-input @error('nsfw') is-invalid @enderror" type="checkbox" name="nsfw" value="true">
+            <input id="nsfw" class="form-check-input @error('nsfw') is-invalid @enderror" type="checkbox" name="nsfw" value="1">
             <label class="form-check-label" for="nsfw"><strong>Is this URL Not Safe For Work (NSFW)?</strong></label>
             @error('nsfw')
                 <div class="invalid-feedback">
