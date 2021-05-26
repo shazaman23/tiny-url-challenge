@@ -31,7 +31,6 @@
 
 To interact with the local website that is running visit http://localhost:8000
 - Make sure your docker cluster is running by running `docker-compose ps`. If the containers aren't running you won't be able to get to the local site. If they're down, just bring them back up with `docker-compose up -d`
-- **Warning:** Every time you redeploy the app locally the database will be reset. Data will not persist. To change this behavior, edit the docker-entrypoint and comment out the `php artisan migrate:fresh` command.
 
 ---
 
