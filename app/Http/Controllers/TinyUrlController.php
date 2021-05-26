@@ -12,7 +12,24 @@ use App\Models\TinyUrl;
 class TinyUrlController extends Controller
 {
     /**
-     * List the top 100 URLs 
+     * Displays the top 100 URLs
+     * @return Response
+     */
+    public function index(Request $request) {
+        // Allow users to pick limit. Default to 100 entries
+        $limit = 100;
+        if ($request->query('limit') !== null) {
+            $limit = (int)$request->query('limit');
+        }
+        $tiny_urls = json_decode($this->list($request)->content());
+        return view('home', [
+            'tiny_urls' => $tiny_urls,
+            'limit' => $limit
+        ]);
+    }
+
+    /**
+     * Fetch the top 100 URLs 
      * @return JSONResponse
      */
     public function list(Request $request) {
@@ -40,16 +57,43 @@ class TinyUrlController extends Controller
     }
 
     /**
+     * Display a form to add a new tiny URL
+     * @return Response
+     */
+    public function showCreateView(Request $request) {
+        return view('create-url');
+    }
+
+    /**
+     * Drive the create tiny URL form
+     * @return Response
+     */
+    public function handleCreateForm(Request $request) {
+        $create_json_response = $this->create($request);
+        $status_class = (int)($create_json_response->status() / 100);
+        // If the create call was successful, go to success landing page
+        if ($status_class == 2) {
+            $url = json_decode($create_json_response->content());
+            return view('create-success', ['url' => $url]);
+        // else go back with errors and old input
+        } else {
+            $err = json_decode($create_json_response->content(), true);
+            return redirect('new')->withErrors($err)->withInput();
+        }
+    }
+
+    /**
      * Create a new tiny URL
      * @return JSONResponse
      */
     public function create(Request $request) {
-        $validatedData = Validator::make($request->all(), [
-            'url' => 'required|url|max:512'
+        $validated_data = Validator::make($request->all(), [
+            'url' => 'required|url|max:512',
+            'nsfw' => 'boolean'
         ]);
 
-        if ($validatedData->fails()) {
-            return response()->json($validatedData->messages(), Response::HTTP_BAD_REQUEST);
+        if ($validated_data->fails()) {
+            return response()->json($validated_data->messages(), Response::HTTP_BAD_REQUEST);
         }
 
         // Fetch last seed used in a hash
@@ -75,7 +119,8 @@ class TinyUrlController extends Controller
         // Create a new TinyUrl
         $tiny_url = TinyUrl::create([
             'id' => $id,
-            'full_url' => $request->url
+            'full_url' => $request->url,
+            'nsfw' => $request->nsfw ?? '0'
         ]);
 
         $tiny_url->save();
@@ -90,7 +135,7 @@ class TinyUrlController extends Controller
      * Should increment hit count and redirect to full URL
      * @return RedirectResponse
      */
-    public function hit(Request $request, $id) {
+    public function hitUrl(Request $request, $id) {
         // Find the right tiny URL
         $tiny_url = TinyUrl::where('id', $id)->firstOrFail();
 
@@ -98,7 +143,11 @@ class TinyUrlController extends Controller
         $tiny_url->update(['hits' => ++$tiny_url->hits]);
         $tiny_url->save();
 
-        return redirect()->away($tiny_url->full_url);
+        if ($tiny_url->nsfw) {
+            return view('nsfw-warning', ['tiny_url' => $tiny_url]);
+        } else {
+            return redirect()->away($tiny_url->full_url);
+        }
     }
 
     /**
